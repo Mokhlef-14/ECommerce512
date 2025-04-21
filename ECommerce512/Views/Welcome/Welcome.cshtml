@@ -1,0 +1,16 @@
+﻿<h1>Name: @Model.name</h1>
+<h1>
+    Age:
+
+    @if (Model.age < 18)
+    {
+        <p>You Are Underage</p>
+    }
+    else
+    {
+        <p>@Model.age</p>
+    }
+
+
+</h1>
+<h1>Salary: @Model.salary</h1>
