@@ -1,0 +1,77 @@
+﻿@model ProductWithRelatedVM
+
+<!-- Product section-->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="~/photos/@Model.Product.MainImg" alt="..." /></div>
+            <div class="col-md-6">
+
+                @if (Model.Product.Quantity > 3)
+                {
+                    <span class="badge text-bg-primary">In Stock</span>
+                }
+                else if (Model.Product.Quantity < 3)
+                {
+                    <span class="badge text-bg-danger">Out Of Stock</span>
+                }
+
+
+                <div class="small mb-1">@Model.Product.Category.Name</div>
+                <h1 class="display-5 fw-bolder">@Model.Product.Name</h1>
+                <div class="fs-5 mb-5">
+                    <span class="text-decoration-line-through">@Model.Product.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</span>
+                    <span>@((Model.Product.Price - (Model.Product.Price * Model.Product.Discount / 100)).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US")))</span>
+                </div>
+                <p class="lead">@Model.Product.Description</p>
+                <div class="d-flex">
+                    <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
+                    <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                        <i class="bi-cart-fill me-1"></i>
+                        Add to cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Related items section-->
+<section class="py-5 bg-light">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h2 class="fw-bolder mb-4">Related products</h2>
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            @foreach (var item in Model.RelatedProducts)
+            {
+                <div class="col mb-5">
+
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id">
+                            <div style="width: 100%; height: 200px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                                <img src="~/photos/@item.MainImg" alt="@item.Name"
+                                     style="width: 180px; height: 180px; object-fit: contain;" />
+                            </div>
+                        </a>
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">@item.Name</h5>
+                                <!-- Product price-->
+                                @item.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US")) - @((item.Price - (item.Price * item.Discount / 100)).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US")))
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add To Cart</a></div>
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    </div>
+</section>
