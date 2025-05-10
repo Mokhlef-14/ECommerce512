@@ -51,7 +51,7 @@ namespace ECommerce512.Controllers
             }
 
             products = products.Skip((page-1) * 8).Take(8);
-            ViewBag.TotalProducts = Math.Ceiling(_context.sproducts.Count() / 8.0);
+            ViewBag.TotalProducts = Math.Ceiling(_context.products.Count() / 8.0);
            
             
             
