@@ -36,12 +36,51 @@
         </div>
     </div>
 </section>
-<!-- Related items section-->
+
 <section class="py-5 bg-light">
     <div class="container px-4 px-lg-5 mt-5">
         <h2 class="fw-bolder mb-4">Related products</h2>
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             @foreach (var item in Model.RelatedProducts)
+            {
+                <div class="col mb-5">
+
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id">
+                            <div style="width: 100%; height: 200px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                                <img src="~/photos/@item.MainImg" alt="@item.Name"
+                                     style="width: 180px; height: 180px; object-fit: contain;" />
+                            </div>
+                        </a>
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">@item.Name</h5>
+                                <!-- Product price-->
+                                @item.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US")) - @((item.Price - (item.Price * item.Discount / 100)).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US")))
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add To Cart</a></div>
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    </div>
+</section>
+<!-- Same Category items section-->
+<section class="py-5 bg-light">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h2 class="fw-bolder mb-4">Related products</h2>
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            @foreach (var item in Model.SameCategoryProducts)
             {
                 <div class="col mb-5">
 

@@ -7,19 +7,19 @@
 <!-- Custom Styles -->
 <style>
     .image-container {
-        position: relative;
-        width: 100%;
-        padding-top: 75%; /* 4:3 aspect ratio (3/4 = 0.75) */
-        background-color: #f8f9fa;
+    position: relative;
+    width: 100%;
+    padding-top: 75%; /* 4:3 aspect ratio (3/4 = 0.75) */
+    background-color: #f8f9fa;
     }
 
     .product-image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
     }
 </style>
 
@@ -32,7 +32,61 @@
         </div>
     </div>
 </header>
+<!-- Filter Section -->
 
+<section class="py-4 bg-light">
+
+
+    <div class="container px-4 px-lg-5">
+        <form action="/Home/Index">
+            <div class="row g-3 align-items-end">
+                <!-- Category Filter -->
+                <div class="col-md-3">
+                    <select name="categortId" class="form-select">
+                        <option value="">All Categories</option>
+                        @if(ViewData["categories"] is List<Category> categories)
+                        {
+                            foreach(var item in categories)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <!-- Product Name Search -->
+                <div class="col-md-3">
+                    <input type="text" class="form-control" placeholder="Search by name" name="query" value="@ViewBag.query" />
+                </div>
+
+                <!-- Min Price -->
+                <div class="col-md-2">
+                    <input type="number" class="form-control" placeholder="Min Price" name="MinPrice" value="@ViewBag.MinPrice" />
+                </div>
+
+                <!-- Max Price -->
+                <div class="col-md-2">
+                    <input type="number" class="form-control" placeholder="Max Price" name="MaxPrice" value="@ViewBag.MaxPrice" />
+                </div>
+
+                <!-- Filter Button -->
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-dark w-100">Filter</button>
+                </div>
+            </div>
+        </form>
+
+        @if (Model.Count() == 0)
+        {
+            <div class="row my-5">
+                <div class="col-12 d-flex justify-content-center">
+                    <h1>No Items</h1>
+                </div>
+            </div>
+        }
+
+    </div>
+</section>
 <!-- Section-->
 <div class="container">
     <section class="py-5">
@@ -42,9 +96,8 @@
                 {
                     <div class="col mb-5">
                         <div class="card h-100">
-                            <!-- Sale badge -->
-                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">@item.Category.Name</div>
 
+                            <!-- Sale badge -->
                             <!-- Product image with 4:3 container, wrapped in link -->
                             <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id">
                                 <div class="image-container">
@@ -53,7 +106,13 @@
                             </a>
 
                             <!-- Product details -->
+                            @if (item.Discount >= 50)
+                            {
+                                <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; left: 0.5rem">HOT</div>
+                            }
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">@item.Category.Name</div>
                             <div class="card-body p-4">
+
                                 <div class="text-center">
                                     <h5 class="fw-bolder">
                                         <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="text-decoration-none text-dark">
@@ -83,7 +142,29 @@
                         </div>
                     </div>
                 }
-            </div>
-        </div>
+
     </section>
 </div>
+
+</div>
+<!-- Pagination -->
+<nav aria-label="Page navigation example" class="mt-5 mb-5">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        @for (int i = 1; i <= ViewBag.TotalProducts;i++)
+        {
+            <li class="page-item"><a class="page-link" href="/Home/Index?Page=@i">@i</a></li>
+        }
+        
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+        </div>
