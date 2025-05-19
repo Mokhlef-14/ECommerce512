@@ -28,7 +28,7 @@ namespace ECommerce512
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{area=Customers}/{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
         }
